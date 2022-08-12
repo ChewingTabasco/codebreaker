@@ -22,6 +22,12 @@ class Game
     @maker = maker
     @breaker = breaker
   end
+
+  def play_round
+    @maker.generate_random_code
+    p @maker.maker_code
+    p @breaker.make_guess
+  end
 end
 
 class Player
@@ -39,11 +45,13 @@ end
 # ---------------------------------------------------------
 
 computer = Computer.new
-computer.generate_random_code
-p computer.maker_code
+# computer.generate_random_code
+# p computer.maker_code
 
 player = Player.new
-player.create_code
-p player.maker_code
-p player.make_guess
+# player.create_code
+# p player.maker_code
+# p player.make_guess
 
+game = Game.new(computer, player)
+game.play_round
