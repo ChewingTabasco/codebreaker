@@ -6,7 +6,7 @@ module Maker
 
   def create_code
     puts 'Maker, create a 4 digit code (1-6).'
-    @maker_code = gets.chomp.split('').map { |num| num.to_i}
+    @maker_code = gets.chomp.split('').map { |num| num.to_i}.take(4)
   end
 end
 
@@ -15,7 +15,7 @@ module Breaker
 
   def make_guess
     puts 'Breaker, make a 4 digit guess (1-6)'
-    @breaker_guess = gets.chomp.split('').map { |num| num.to_i}
+    @breaker_guess = gets.chomp.split('').map { |num| num.to_i}.take(4)
   end
 
   def get_auto_feedback(maker)
