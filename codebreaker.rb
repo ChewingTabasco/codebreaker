@@ -11,9 +11,16 @@ module Maker
 end
 
 module Breaker
+  attr_reader :breaker_guess
+
   def make_guess
     puts 'Breaker, make a 4 digit guess (1-6)'
     @breaker_guess = gets.chomp.split('').map { |num| num.to_i}
+  end
+
+  def get_auto_feedback(maker)
+    @maker = maker
+
   end
 end
 
@@ -27,6 +34,22 @@ class Game
     @maker.generate_random_code
     p @maker.maker_code
     p @breaker.make_guess
+
+    @perf_matches = []
+    @value_matches = []
+    @breaker.breaker_guess.each.with_index do |guess_num, guess_index|
+      @maker.maker_code.each.with_index do |num, index|
+        if num == guess_num && index == guess_index
+          @perf_matches.push(num)
+        elsif num == guess_num && !(index == guess_index)
+          @value_matches.push(num)
+        end
+      end
+    end
+    p @perf_matches
+    puts "#{@perf_matches.size} match(es) in your guess are the correct number in the correct position."
+    p @value_matches
+    puts "#{@value_matches.size} match(es) in your guess are the correct numbr in the incorrect position."
   end
 end
 
