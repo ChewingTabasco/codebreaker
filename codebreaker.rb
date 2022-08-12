@@ -12,6 +12,11 @@ end
 
 class Game
   extend Maker
+
+  def initialize(maker, breaker)
+    @maker = maker
+    @breaker = breaker
+  end
 end
 
 p Game.generate_random_code
