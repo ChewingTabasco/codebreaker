@@ -10,6 +10,13 @@ module Maker
   end
 end
 
+module Breaker
+  def make_guess
+    puts 'Breaker, make a 4 digit guess (1-6)'
+    @breaker_guess = gets.chomp.split('')
+  end
+end
+
 class Game
   extend Maker
 
@@ -20,7 +27,7 @@ class Game
 end
 
 class Player
-  include Maker
+  include Maker, Breaker
 
   def initialize; end
 end
@@ -30,3 +37,5 @@ p Game.generate_random_code
 player = Player.new
 player.create_code
 p player.maker_code
+
+p player.make_guess
