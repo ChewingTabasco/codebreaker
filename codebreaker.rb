@@ -20,21 +20,40 @@ module Breaker
 
   def get_auto_feedback(maker)
     @maker = maker
+    @guesses_copy = @breaker_guess
     @perf_matches = []
+    @match_indexes = []
     @value_matches = []
-    @breaker_guess.each.with_index do |guess_num, guess_index|
-      @maker.maker_code.each.with_index do |num, index|
-        if num == guess_num && index == guess_index
-          @perf_matches.push(num)
-        elsif num == guess_num && !(index == guess_index)
-          @value_matches.push(num)
+    @master_code = @maker.maker_code
+
+    @guesses_copy.each.with_index do |guess_num, guess_index|
+      if guess_num == @master_code[guess_index]
+        @perf_matches.push(guess_num)
+        @match_indexes.push(guess_index)
+      end
+    end
+
+    @match_indexes.each do |i|
+      @master_code.delete_at(i)
+      @guesses_copy.delete_at(i)
+    end
+
+    p "master code = #{@master_code}"
+    p "guesses copy = #{@guesses_copy}"
+
+    @guesses_copy.each do |remaining_num|
+      @master_code.each do |original_num|
+        if remaining_num == original_num
+          @value_matches.push(remaining_num)
+          next
         end
       end
     end
+
     p @perf_matches
     puts "#{@perf_matches.size} match(es) in your guess are the correct number in the correct position."
     p @value_matches
-    puts "#{@value_matches.size} match(es) in your guess are the correct numbr in the incorrect position."
+    puts "#{@value_matches.size} match(es) in your guess are the correct number in the incorrect position."
 
   end
 end
