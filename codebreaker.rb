@@ -19,6 +19,14 @@ class Game
   end
 end
 
+class Player
+  include Maker
+
+  def initialize; end
+end
+
 p Game.generate_random_code
-Game.create_code
-p Game.maker_code
+
+player = Player.new
+player.create_code
+p player.maker_code
