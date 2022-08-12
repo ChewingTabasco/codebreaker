@@ -4,4 +4,8 @@ module Maker
   end
 end
 
+class Game
+  extend Maker
+end
 
+p Game.generate_random_code
