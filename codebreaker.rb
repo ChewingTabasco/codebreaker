@@ -18,8 +18,6 @@ module Breaker
 end
 
 class Game
-  extend Maker
-
   def initialize(maker, breaker)
     @maker = maker
     @breaker = breaker
@@ -32,7 +30,11 @@ class Player
   def initialize; end
 end
 
-p Game.generate_random_code
+class Computer
+  include Maker, Breaker
+
+  def initialize; end
+end
 
 player = Player.new
 player.create_code
