@@ -21,7 +21,6 @@ module Breaker
 
   def get_auto_feedback(maker)
     @exact_matches = []
-    @value_matches = []
     @master_code = maker.maker_code
 
     # Pushes the values of the user's guesses that match the maker code values at the same index
