@@ -38,6 +38,7 @@ module Breaker
       p @breaker_guess
     end
 
+    # This is an intersection of two arrays that also includes duplicate numbers
     close_matches = ((@master_code & @breaker_guess).flat_map { |n| [n] * [@master_code.count(n), @breaker_guess.count(n)].min })
 
     puts "#{exact_matches.size} match(es) in your guess are the correct number in the correct position."
