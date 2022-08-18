@@ -41,12 +41,12 @@ module Breaker
     p "master code = #{@master_code}"
     p "guesses copy = #{@guesses_copy}"
 
-    @guesses_copy.each do |remaining_num|
-      @master_code.each do |original_num|
-        if remaining_num == original_num
-          @value_matches.push(remaining_num)
-          next
-        end
+    @guesses_copy.each do |number|
+      if @master_code.include?(number)
+        @value_matches.push(number)
+        @master_code.delete_at(@master_code.index(number))
+
+        p "master_str = #{@master_code}"
       end
     end
 
