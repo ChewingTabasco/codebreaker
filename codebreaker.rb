@@ -27,7 +27,8 @@ module Breaker
     p "#{remaining_master_values} <--remaining master values"
     p "#{remaining_guess_values} <--remaining guess values"
 
-    # This is an intersection of two arrays that also includes duplicate numbers (all values that match, but are at different indexes)
+    # This is an intersection of two arrays that also includes duplicate numbers
+    # (all values that match, but are at different indexes)
     close_matches = ((remaining_master_values & remaining_guess_values).flat_map do |n|
       [n] * [remaining_master_values.count(n), remaining_guess_values.count(n)].min
     end)
