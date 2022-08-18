@@ -20,26 +20,17 @@ module Breaker
   end
 
   def get_auto_feedback(maker)
-    exact_matches = []
-    @master_code = maker.maker_code
+    master_code = maker.maker_code
+    exact_matches = @breaker_guess.select.with_index { |num, index| num == master_code[index] }
+    remaining_master_values = master_code.select.with_index { |num, index| num != @breaker_guess[index] }
+    remaining_guess_values = @breaker_guess.select.with_index { |num, index| num != master_code[index] }
+    p "#{remaining_master_values} <--remaining master values"
+    p "#{remaining_guess_values} <--remaining guess values"
 
-    # Pushes the values of the user's guesses that match the maker code values at the same index
-    @breaker_guess.each.with_index do |guess_num, guess_index|
-      if guess_num == @master_code[guess_index]
-        exact_matches.push(guess_num)
-      end
-    end
-
-    # Remove exact matches from both the maker & the breaker arrays to prevent them being counted again in the next step
-    exact_matches.each do |num|
-      @master_code.delete_at(@master_code.index(num))
-      p @master_code
-      @breaker_guess.delete_at(@breaker_guess.index(num))
-      p @breaker_guess
-    end
-
-    # This is an intersection of two arrays that also includes duplicate numbers
-    close_matches = ((@master_code & @breaker_guess).flat_map { |n| [n] * [@master_code.count(n), @breaker_guess.count(n)].min })
+    # This is an intersection of two arrays that also includes duplicate numbers (all values that match, but are at different indexes)
+    close_matches = ((remaining_master_values & remaining_guess_values).flat_map do |n|
+      [n] * [remaining_master_values.count(n), remaining_guess_values.count(n)].min
+    end)
 
     print_feedback(exact_matches, close_matches)
   end
@@ -57,8 +48,8 @@ class Game
   end
 
   def play_round
-    @maker.generate_random_code
-    p @maker.maker_code
+    # @maker.generate_random_code
+    p "#{@maker.maker_code} <--Maker code"
     p @breaker.make_guess
 
     @breaker.get_auto_feedback(@maker)
@@ -90,4 +81,6 @@ player = Player.new
 # p player.make_guess
 
 game = Game.new(computer, player)
-game.play_round
+computer.generate_random_code
+# game.play_round
+4.times { game.play_round }
