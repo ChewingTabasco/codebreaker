@@ -1,7 +1,8 @@
 module Maker
   attr_reader :maker_code
+  
   def generate_random_code
-    @maker_code = [(1 + rand(6)), (1 + rand(6)), (1 + rand(6)), (1 + rand(6))]
+    @maker_code = [rand(1..6), rand(1..6), rand(1..6), rand(1..6)]
   end
 
   def create_code
@@ -19,41 +20,27 @@ module Breaker
   end
 
   def get_auto_feedback(maker)
-    @maker = maker
-    @guesses_copy = @breaker_guess
-    @perf_matches = []
-    @match_indexes = []
+    @exact_matches = []
     @value_matches = []
-    @master_code = @maker.maker_code
+    @master_code = maker.maker_code
 
-    @guesses_copy.each.with_index do |guess_num, guess_index|
+    # Pushes the values of the user's guesses that match the maker code values at the same index
+    @breaker_guess.each.with_index do |guess_num, guess_index|
       if guess_num == @master_code[guess_index]
-        @perf_matches.push(guess_num)
-        @match_indexes.push(guess_index)
+        @exact_matches.push(guess_num)
       end
     end
 
-    @match_indexes.each do |i|
-      @master_code.delete_at(i)
-      @guesses_copy.delete_at(i)
+    # Remove exact matches from both the maker & the breaker arrays to prevent them being counted again in the next step
+    @exact_matches.each do |num|
+      @master_code.delete_at(@master_code.index(num))
+      @breaker_guess.delete_at(@breaker_guess.index(num))
     end
 
-    p "master code = #{@master_code}"
-    p "guesses copy = #{@guesses_copy}"
+    vals = @master_code & @breaker_guess
 
-    @guesses_copy.each do |number|
-      if @master_code.include?(number)
-        @value_matches.push(number)
-        @master_code.delete_at(@master_code.index(number))
-        p "master_str = #{@master_code}"
-      end
-    end
-
-    p @perf_matches
-    puts "#{@perf_matches.size} match(es) in your guess are the correct number in the correct position."
-    p @value_matches
-    puts "#{@value_matches.size} match(es) in your guess are the correct number in the incorrect position."
-
+    puts "#{@exact_matches.size} match(es) in your guess are the correct number in the correct position."
+    puts "#{vals.size} match(es) in your guess are the correct number in the incorrect position."
   end
 end
 
