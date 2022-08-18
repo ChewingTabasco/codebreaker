@@ -20,26 +20,28 @@ module Breaker
   end
 
   def get_auto_feedback(maker)
-    @exact_matches = []
+    exact_matches = []
     @master_code = maker.maker_code
 
     # Pushes the values of the user's guesses that match the maker code values at the same index
     @breaker_guess.each.with_index do |guess_num, guess_index|
       if guess_num == @master_code[guess_index]
-        @exact_matches.push(guess_num)
+        exact_matches.push(guess_num)
       end
     end
 
     # Remove exact matches from both the maker & the breaker arrays to prevent them being counted again in the next step
-    @exact_matches.each do |num|
+    exact_matches.each do |num|
       @master_code.delete_at(@master_code.index(num))
+      p @master_code
       @breaker_guess.delete_at(@breaker_guess.index(num))
+      p @breaker_guess
     end
 
-    vals = @master_code & @breaker_guess
+    close_matches = ((@master_code & @breaker_guess).flat_map { |n| [n] * [@master_code.count(n), @breaker_guess.count(n)].min })
 
-    puts "#{@exact_matches.size} match(es) in your guess are the correct number in the correct position."
-    puts "#{vals.size} match(es) in your guess are the correct number in the incorrect position."
+    puts "#{exact_matches.size} match(es) in your guess are the correct number in the correct position."
+    puts "#{close_matches.size} match(es) in your guess are the correct number in the incorrect position."
   end
 end
 
