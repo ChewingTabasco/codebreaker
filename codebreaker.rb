@@ -24,8 +24,6 @@ module Breaker
     @exact_matches = @breaker_guess.select.with_index { |num, index| num == master_code[index] }
     remaining_master_values = master_code.select.with_index { |num, index| num != @breaker_guess[index] }
     remaining_guess_values = @breaker_guess.select.with_index { |num, index| num != master_code[index] }
-    # p "#{remaining_master_values} <--remaining master values"
-    # p "#{remaining_guess_values} <--remaining guess values"
 
     # This is an intersection of two arrays that also includes duplicate numbers
     # (all values that match, but are at different indexes)
@@ -50,7 +48,6 @@ class Game
   end
 
   def play_round
-    # @maker.generate_random_code
     # p "#{@maker.maker_code} <--Maker code"
     p @breaker.make_guess
 
