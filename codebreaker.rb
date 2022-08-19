@@ -41,8 +41,9 @@ module Breaker
 end
 
 class Game
+  # create a set maker/breaker method to call in here
+
   def initialize(maker, breaker)
-    # create a set maker/breaker method to call here
     @maker = maker
     @breaker = breaker
   end
