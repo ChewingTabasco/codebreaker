@@ -76,13 +76,15 @@ class Game
 end
 
 class Player
-  include Maker, Breaker
+  include Maker
+  include Breaker
 
   def initialize; end
 end
 
 class Computer
-  include Maker, Breaker
+  include Maker
+  include Breaker
 
   def initialize; end
 end
