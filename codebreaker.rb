@@ -1,6 +1,6 @@
 module Maker
   attr_reader :maker_code
-  
+
   def generate_random_code
     @maker_code = [rand(1..6), rand(1..6), rand(1..6), rand(1..6)]
   end
@@ -12,7 +12,7 @@ module Maker
 end
 
 module Breaker
-  attr_reader :breaker_guess
+  attr_reader :breaker_guess, :exact_matches
 
   def make_guess
     puts 'Breaker, make a 4 digit guess (1-6)'
@@ -21,7 +21,7 @@ module Breaker
 
   def get_auto_feedback(maker)
     master_code = maker.maker_code
-    exact_matches = @breaker_guess.select.with_index { |num, index| num == master_code[index] }
+    @exact_matches = @breaker_guess.select.with_index { |num, index| num == master_code[index] }
     remaining_master_values = master_code.select.with_index { |num, index| num != @breaker_guess[index] }
     remaining_guess_values = @breaker_guess.select.with_index { |num, index| num != master_code[index] }
     p "#{remaining_master_values} <--remaining master values"
@@ -33,7 +33,7 @@ module Breaker
       [n] * [remaining_master_values.count(n), remaining_guess_values.count(n)].min
     end)
 
-    print_feedback(exact_matches, close_matches)
+    print_feedback(@exact_matches, close_matches)
   end
 
   def print_feedback(exact_match, close_match)
@@ -44,6 +44,7 @@ end
 
 class Game
   def initialize(maker, breaker)
+    # create a set maker/breaker method to call here
     @maker = maker
     @breaker = breaker
   end
@@ -54,7 +55,23 @@ class Game
     p @breaker.make_guess
 
     @breaker.get_auto_feedback(@maker)
-    
+  end
+
+  def play_game
+    round_count = 1
+
+    while round_count <= 12
+      puts "Round ##{round_count}"
+      play_round
+      round_count += 1
+      break if @breaker.exact_matches.size >= 4
+    end
+
+    if @breaker.exact_matches.size >= 4
+      puts 'Congratulations Codebreaker! You have cracked the secret code!'
+    else
+      puts 'The Codemaker has bested you... The code remains unsolved.'
+    end
   end
 end
 
@@ -84,4 +101,5 @@ player = Player.new
 game = Game.new(computer, player)
 computer.generate_random_code
 # game.play_round
-4.times { game.play_round }
+# 4.times { game.play_round }
+game.play_game
