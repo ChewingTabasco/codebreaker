@@ -76,6 +76,10 @@ class Game
       puts 'The Codemaker has bested you... The code remains unsolved.'
     end
   end
+
+  def code_to_color(code)
+    colors = [:light_red, :yellow, :light_yellow, :light_green, :light_blue, :light_magenta]
+  end
 end
 
 class Player
