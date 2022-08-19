@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require 'colorize'
+
 module Maker
   attr_reader :maker_code
 
@@ -37,6 +41,7 @@ module Breaker
   def print_feedback(exact_match, close_match)
     puts "#{exact_match.size} match(es) in your guess are the correct number in the correct position."
     puts "#{close_match.size} match(es) in your guess are the correct number in the incorrect position."
+    puts "#{@breaker_guess} #{Array.new(exact_match.size, '●').join(' ')} #{Array.new(close_match.size, '○').join(' ')}"
   end
 end
 
