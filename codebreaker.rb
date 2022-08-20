@@ -39,9 +39,7 @@ module Breaker
   end
 
   def print_feedback(exact_match, close_match)
-    puts "#{exact_match.size} match(es) in your guess are the correct number in the correct position."
-    puts "#{close_match.size} match(es) in your guess are the correct number in the incorrect position."
-    puts "#{@breaker_guess} #{Array.new(exact_match.size, '●').join(' ')} #{Array.new(close_match.size, '○').join(' ')}"
+    puts "#{Array.new(exact_match.size, '●').join(' ')} #{Array.new(close_match.size, '○').join(' ')}"
   end
 end
 
@@ -54,14 +52,16 @@ class Game
   end
 
   def play_round
-    # p "#{@maker.maker_code} <--Maker code"
-    p @breaker.make_guess
+    @breaker.make_guess
+    print_in_color(@breaker.breaker_guess)
 
     @breaker.get_auto_feedback(@maker)
   end
 
   def play_game
     round_count = 1
+
+    puts 'Codebreaker, you must crack the secret code before its too late!'
 
     while round_count <= 12
       puts "Round ##{round_count}"
@@ -77,8 +77,11 @@ class Game
     end
   end
 
-  def code_to_color(code)
-    colors = [:light_red, :yellow, :light_yellow, :light_green, :light_blue, :light_magenta]
+  def print_in_color(code)
+    colors = %i[light_red yellow light_yellow light_green light_blue light_magenta]
+    code.each do |num|
+      print " #{num} ".colorize(:color => :black, :background => colors[num - 1]) + ' '
+    end
   end
 end
 
@@ -99,16 +102,8 @@ end
 # ---------------------------------------------------------
 
 computer = Computer.new
-# computer.generate_random_code
-# p computer.maker_code
-
 player = Player.new
-# player.create_code
-# p player.maker_code
-# p player.make_guess
 
 game = Game.new(computer, player)
 computer.generate_random_code
-# game.play_round
-# 4.times { game.play_round }
 game.play_game
