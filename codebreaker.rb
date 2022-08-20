@@ -73,7 +73,9 @@ class Game
     if @breaker.exact_matches.size >= 4
       puts "Congratulations Codebreaker! You've cracked the secret code!"
     else
-      puts 'The Codemaker has bested you... The code remains unsolved.'
+      print 'The Codemaker has bested you... The code was: '
+      print_in_color(@maker.maker_code)
+      puts ' '
     end
   end
 
