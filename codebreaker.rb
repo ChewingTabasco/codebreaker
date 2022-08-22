@@ -20,7 +20,13 @@ module Breaker
 
   def make_guess
     puts 'Breaker, make a 4 digit guess (1-6)'
-    @breaker_guess = gets.chomp.split('').map(&:to_i).take(4)
+    @breaker_guess = gets.chomp.split('').map(&:to_i)
+
+    if !@breaker_guess.all?(1..6) || @breaker_guess.size != 4
+      puts 'Your guess must contain four numbers between 1 and 6.'
+      make_guess
+    end
+
   end
 
   def get_auto_feedback(maker)
