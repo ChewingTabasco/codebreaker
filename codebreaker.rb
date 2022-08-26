@@ -103,6 +103,51 @@ class Game
     color.
 
     '
+
+    Game.startup_menu
+  end
+
+  def self.startup_menu
+    puts "
+    Welcome to Codebreaker!
+
+    ------Main Menu------
+
+    [i] Instructions
+    [s] Start New Game
+
+    Enter your selection followed by the 'Enter' key.
+    "
+    m_select = gets.chomp.downcase
+    if m_select == 'i'
+      print_instructions
+    elsif m_select == 's'
+
+    puts "
+    Will you be playing as the CODEMAKER or the CODEBREAKER?
+
+    [m] CODEMAKER
+    [b} CODEBREAKER
+
+    Enter your selection followed by the 'Enter' key.
+    "
+
+      computer = Computer.new
+      player = Player.new
+
+      m_select = gets.chomp.downcase
+      if m_select == 'b'
+        game = Game.new(computer, player)
+        computer.generate_random_code
+        game.play_game
+      elsif m_select == 'm'
+        computer = Computer.new
+        player = Player.new
+
+        game = Game.new(player, computer)
+        game.play_game
+      end
+    end
   end
 
   def play_round
@@ -115,10 +160,14 @@ class Game
   def play_game
     round_count = 1
 
-    puts 'Codebreaker, you must crack the secret code before its too late!'
+    puts '
+Codebreaker, you must crack the secret code before its too late!
+
+'
 
     while round_count <= 12
-      puts "Round ##{round_count}"
+      puts "Round ##{round_count}
+"
       play_round
       round_count += 1
       break if @breaker.exact_matches.size >= 4
@@ -138,7 +187,9 @@ class Game
   end
 
   def play_again?
-    puts "Enter 'y' to play again, or press any other key to exit the game."
+    puts "
+Enter 'y' to play again, or press any other key to exit the game.
+"
 
     gets.chomp.downcase == 'y'
   end
@@ -167,11 +218,12 @@ end
 
 # ---------------------------------------------------------
 
-computer = Computer.new
-player = Player.new
+# computer = Computer.new
+# player = Player.new
 
-Game.print_instructions
+# Game.print_instructions
+Game.startup_menu
 
-game = Game.new(computer, player)
-computer.generate_random_code
-game.play_game
+# game = Game.new(computer, player)
+# computer.generate_random_code
+# game.play_game
