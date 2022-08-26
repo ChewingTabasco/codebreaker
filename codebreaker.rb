@@ -26,7 +26,6 @@ module Breaker
       puts 'Your guess must contain four numbers between 1 and 6.'
       make_guess
     end
-
   end
 
   def get_auto_feedback(maker)
@@ -55,6 +54,55 @@ class Game
   def initialize(maker, breaker)
     @maker = maker
     @breaker = breaker
+  end
+
+  def self.print_instructions
+    inst_game = Game.new(nil, nil)
+    puts '
+    Welcome to Codebreaker!
+
+    -----------------------------
+
+    There are 2 players in this game: The CODEMAKER and the CODEBREAKER.
+
+    You will decide which side you would like to play. The other side
+    will be played by the computer.
+
+    The CODEMAKER will create a secret code of four colors. The CODEBREAKER
+    will have 12 chances to guess the correct code. If the CODEBREAKER does
+    not guess correctly within 12 rounds, the CODEMAKER wins.
+
+    There are 6 different colors to choose from, each represented by a
+    number (1 - 6):
+    '
+    print '    '
+    inst_game.print_in_color((1..6))
+    puts '
+
+    The CODEBREAKER will make 4 digit guesses using numbers to represent the
+    corresponding colors.
+
+    The CODEMAKER will judge the provided guesses with symbols representing
+    exact matches and close matches.
+
+      - An exact match is a color/number in the CODEBREAKER guess that is in
+      the same position in the secret code.
+
+      - A close match is a color/number in the CODEBREAKER guess that is
+      found in the secret code, but is not in the correct position.
+
+    When you are playing as the CODEBREAKER, your guess will be printed in
+    the console along with the symbols representing any of your matches (if
+    any exist).
+
+    ● = Exact Match   ○ = Close Match
+
+      * The position of the dots DO NOT represent the position of your match.
+
+    The secret code can contain repeat colors or even be four of the same
+    color.
+
+    '
   end
 
   def play_round
@@ -111,6 +159,8 @@ end
 
 computer = Computer.new
 player = Player.new
+
+Game.print_instructions
 
 game = Game.new(computer, player)
 computer.generate_random_code
