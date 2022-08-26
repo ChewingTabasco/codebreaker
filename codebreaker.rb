@@ -131,6 +131,16 @@ class Game
       print_in_color(@maker.maker_code)
       puts ' '
     end
+    if play_again?
+      @maker.generate_random_code
+      play_game
+    end
+  end
+
+  def play_again?
+    puts "Enter 'y' to play again, or press any other key to exit the game."
+
+    gets.chomp.downcase == 'y'
   end
 
   def print_in_color(code)
