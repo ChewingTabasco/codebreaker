@@ -132,18 +132,18 @@ class Game
     Enter your selection followed by the 'Enter' key.
     "
 
-      computer = Computer.new
-      player = Player.new
+    computer = Computer.new
+    player = Player.new
 
-      m_select = gets.chomp.downcase
-      if m_select == 'b'
-        game = Game.new(computer, player)
-        computer.generate_random_code
-        game.play_game
-      elsif m_select == 'm'
-        game = Game.new(player, computer)
-        game.play_game
-      end
+    m_select = gets.chomp.downcase
+    if m_select == 'b'
+      game = Game.new(computer, player)
+      computer.generate_random_code
+      game.play_game
+    elsif m_select == 'm'
+      game = Game.new(player, computer)
+      game.play_game
+    end
     end
   end
 
