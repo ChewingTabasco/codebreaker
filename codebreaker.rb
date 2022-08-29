@@ -180,7 +180,7 @@ class Game
       print_in_color(@maker.maker_code)
       puts '
       '
-      puts 'The codemaker has made a guess:'
+      puts 'The codebreaker has made a guess:'
       print_in_color(@breaker.breaker_guess)
       puts '
       '
