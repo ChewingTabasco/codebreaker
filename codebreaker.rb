@@ -28,6 +28,10 @@ module Breaker
     end
   end
 
+  def auto_guess
+    @breaker_guess = [rand(1..6), rand(1..6), rand(1..6), rand(1..6)]
+  end
+
   def get_auto_feedback(maker)
     master_code = maker.maker_code
     @exact_matches = @breaker_guess.select.with_index { |num, index| num == master_code[index] }
@@ -41,6 +45,23 @@ module Breaker
     end)
 
     print_feedback(@exact_matches, close_matches)
+  end
+
+  def get_player_feedback
+    @exact_matches = []
+    puts 'How many EXACT matches does the codebreaker have?
+    '
+    number_of_exact_matches = gets.chomp.to_i
+    number_of_exact_matches.times { @exact_matches.push('x') }
+
+    puts "Exact matches = #{number_of_exact_matches}
+    "
+    puts "@exact_matches = #{@exact_matches}"
+
+    puts 'How many CLOSE matches does the codebreaker have?
+    '
+    number_of_close_matches = gets.chomp.to_i
+    puts "Close matches = #{number_of_close_matches}"
   end
 
   def print_feedback(exact_match, close_match)
@@ -142,16 +163,30 @@ class Game
       game.play_game
     elsif m_select == 'm'
       game = Game.new(player, computer)
+      player.create_code
       game.play_game
     end
     end
   end
 
   def play_round
-    @breaker.make_guess
-    print_in_color(@breaker.breaker_guess)
-
-    @breaker.get_auto_feedback(@maker)
+    if @breaker.is_a?(Player)
+      @breaker.make_guess
+      print_in_color(@breaker.breaker_guess)
+      @breaker.get_auto_feedback(@maker)
+    else
+      @breaker.auto_guess
+      puts 'Your secret code:'
+      print_in_color(@maker.maker_code)
+      puts '
+      '
+      puts 'The codemaker has made a guess:'
+      print_in_color(@breaker.breaker_guess)
+      puts '
+      '
+      # ...... give feedback
+      @breaker.get_player_feedback
+    end
   end
 
   def play_game
@@ -178,7 +213,11 @@ Codebreaker, you must crack the secret code before its too late!
       puts ' '
     end
     if play_again?
-      @maker.generate_random_code
+      if @breaker.is_a?(Player)
+        @maker.generate_random_code
+      else
+        @maker.create_code
+      end
       play_game
     end
   end
