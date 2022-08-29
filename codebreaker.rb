@@ -141,9 +141,6 @@ class Game
         computer.generate_random_code
         game.play_game
       elsif m_select == 'm'
-        computer = Computer.new
-        player = Player.new
-
         game = Game.new(player, computer)
         game.play_game
       end
