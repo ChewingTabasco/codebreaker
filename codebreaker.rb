@@ -28,8 +28,29 @@ module Breaker
     end
   end
 
-  def auto_guess
-    @breaker_guess = [rand(1..6), rand(1..6), rand(1..6), rand(1..6)]
+  def auto_guess(maker)
+    if @breaker_guess
+      @breaker_guess = smart_guess(@breaker_guess, maker)
+    else
+      @breaker_guess = [rand(1..6), rand(1..6), rand(1..6), rand(1..6)]
+    end
+  end
+
+  def smart_guess(previous_guess, maker)
+    smart_guess = []
+    exact_count = 0
+
+    @breaker_guess.each.with_index do |num, index|
+      if previous_guess[index] == maker.maker_code[index]
+        smart_guess.push(previous_guess[index])
+        exact_count += 1
+      else
+        smart_guess.push(rand(1..6))
+      end
+    end
+      puts "The computer has detected #{exact_count} EXACT matches in
+      the Breaker's guess."
+      smart_guess
   end
 
   def get_auto_feedback(maker)
@@ -175,7 +196,7 @@ class Game
       print_in_color(@breaker.breaker_guess)
       @breaker.get_auto_feedback(@maker)
     else
-      @breaker.auto_guess
+      @breaker.auto_guess(@maker)
       puts 'Your secret code:'
       print_in_color(@maker.maker_code)
       puts '
@@ -186,6 +207,7 @@ class Game
       '
       # ...... give feedback
       @breaker.get_player_feedback
+
     end
   end
 
@@ -208,7 +230,7 @@ Codebreaker, you must crack the secret code before its too late!
     if @breaker.exact_matches.size >= 4
       puts "Congratulations Codebreaker! You've cracked the secret code!"
     else
-      print 'The Codemaker has bested you... The code was: '
+      print 'The Codemaker has bested the Codebreaker... The code was: '
       print_in_color(@maker.maker_code)
       puts ' '
     end
