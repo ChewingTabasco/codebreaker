@@ -153,6 +153,7 @@ class Game
 
     [i] Instructions
     [s] Start New Game
+    [Any other key] Exit Program
 
     Enter your selection followed by the 'Enter' key.
     "
@@ -165,7 +166,8 @@ class Game
     Will you be playing as the CODEMAKER or the CODEBREAKER?
 
     [m] CODEMAKER
-    [b} CODEBREAKER
+    [b] CODEBREAKER
+    [Any other key] Exit Program
 
     Enter your selection followed by the 'Enter' key.
     "
