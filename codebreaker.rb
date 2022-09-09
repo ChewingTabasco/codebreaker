@@ -48,8 +48,6 @@ module Breaker
         smart_guess.push(rand(1..6))
       end
     end
-      puts "The computer has detected #{exact_count} EXACT matches in
-      the Breaker's guess."
       smart_guess
   end
 
@@ -77,8 +75,6 @@ module Breaker
 
     puts "Exact matches = #{number_of_exact_matches}
     "
-    puts "@exact_matches = #{@exact_matches}"
-
     puts 'How many CLOSE matches does the codebreaker have?
     '
     number_of_close_matches = gets.chomp.to_i
